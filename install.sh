@@ -25,12 +25,12 @@ main() {
   }
   
   # run main install functions
-  download "$INSTALL_DIR" || {
+  download "$INSTALL_DIR" "$REPO" || {
     dotlog::error "Download failed"
     exit 1
   }
   
-  clone "$INSTALL_DIR" || {
+  clone "$INSTALL_DIR" "$REPO" || {
     dotlog::error "Git clone/init failed"
     exit 1
   }
