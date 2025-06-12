@@ -16,13 +16,8 @@ main() {
   fi
   
   # source source_libs function first
-  source "$install_dir/lib/source.sh"
-  
-  # use it to source the rest of the libs
-  source_libs "$install_dir/lib" || {
-    dotlog::error "Failed to source library scripts"
-    exit 1
-  }
+  source "$install_dir/lib/clone.sh"
+  source "$install_dir/lib/download.sh"
   
   # run main install functions
   download "$install_dir" "$repo_name" || {
