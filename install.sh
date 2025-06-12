@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# constants
-readonly REPO="dotutils"
-readonly INSTALL_DIR="$HOME/.local/lib/$REPO"
-readonly TARBALL="/tmp/${REPO}.tar.gz"
-
 main() {
+  # constants
+  local REPO="dotutils"
+  local INSTALL_DIR="$HOME/.local/lib/$REPO"
+  local TARBALL="/tmp/${REPO}.tar.gz"
+
   # Step 1: Download the repo into INSTALL_DIR
   if [[ ! -d "$INSTALL_DIR" ]]; then
     mkdir -p "$INSTALL_DIR"
