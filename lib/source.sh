@@ -5,17 +5,17 @@ source_libs() {
 	local lib_dir="$1"
 
 	if [[ ! -d "$lib_dir" ]]; then
-		dotlog::error "Library directory not found: $lib_dir"
+		echo "Library directory not found: $lib_dir"
 		return 1
 	fi
 
 	shopt -s nullglob
 	for lib in "$lib_dir"/*.sh; do
 		if [[ -f "$lib" && -r "$lib" ]]; then
-			dotlog::process "Sourcing $lib"
+			echo "Sourcing $lib"
 			source "$lib"
 		else
-			dotlog::error "Cannot read $lib"
+			echo "Cannot read $lib"
 			return 1
 		fi
 	done
