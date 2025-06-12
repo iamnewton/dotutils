@@ -3,41 +3,41 @@ set -euo pipefail
 
 main() {
   # constants
-  local REPO="dotutils"
-  local INSTALL_DIR="$HOME/.local/lib/$REPO"
-  local TARBALL="/tmp/${REPO}.tar.gz"
+  local repo_name="dotutils"
+  local install_dir="$HOME/.local/lib/$repo_name"
+  local tarball="/tmp/${repo_name}.tar.gz"
 
-  # Step 1: Download the repo into INSTALL_DIR
-  if [[ ! -d "$INSTALL_DIR" ]]; then
-    mkdir -p "$INSTALL_DIR"
-    curl -#fLo "$TARBALL" "https://github.com/iamnewton/$REPO/tarball/main"
-    tar -zxf "$TARBALL" --strip-components 1 -C "$INSTALL_DIR"
-    rm -f "$TARBALL"
+  # Step 1: Download the repo_name into install_dir
+  if [[ ! -d "$install_dir" ]]; then
+    mkdir -p "$install_dir"
+    curl -#fLo "$tarball" "https://github.com/iamnewton/$repo_name/tarball/main"
+    tar -zxf "$tarball" --strip-components 1 -C "$install_dir"
+    rm -f "$tarball"
   fi
   
   # source source_libs function first
-  source "$INSTALL_DIR/lib/source.sh"
+  source "$install_dir/lib/source.sh"
   
   # use it to source the rest of the libs
-  source_libs "$INSTALL_DIR" || {
+  source_libs "$install_dir" || {
     dotlog::error "Failed to source library scripts"
     exit 1
   }
   
   # run main install functions
-  download "$INSTALL_DIR" "$REPO" || {
+  download "$install_dir" "$repo_name" || {
     dotlog::error "Download failed"
     exit 1
   }
   
-  clone "$INSTALL_DIR" "$REPO" || {
+  clone "$install_dir" "$repo_name" || {
     dotlog::error "Git clone/init failed"
     exit 1
   }
 
-  if [[ -d "$INSTALL_DIR/.git" ]]; then
-    version="$(git -C "$INSTALL_DIR" rev-parse --short HEAD 2>/dev/null || echo "unknown")"
-  
+  if [[ -d "$install_dir/.git" ]]; then
+    version="$(git -C "$install_dir" rev-parse --short HEAD 2>/dev/null || echo "unknown")"
+    dotlog::success "$repo_name version $version successfully installed"
   else
     dotlog::error "Something went wrong"
     exit 1
