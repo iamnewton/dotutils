@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+LIB_DIR="$SCRIPT_DIR/../lib"
+
+if [[ ! -d "$LIB_DIR" ]]; then
+	dotlog::error "Library directory not found: $LIB_DIR"
+	exit 1
+fi
+
+for lib in "$LIB_DIR"/*.sh; do
+	if [[ -f "$lib" && -r "$lib" ]]; then
+		dotlog::process "Sourcing $lib"
+		source "$lib"
+	else
+		dotlog::error "Cannot read $lib"
+		exit 1
+	fi
+done
+
+dotlog::success "dotutils sourced successfully"
