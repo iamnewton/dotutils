@@ -19,7 +19,7 @@ main() {
   source "$install_dir/lib/source.sh"
   
   # use it to source the rest of the libs
-  source_libs "$install_dir" || {
+  source_libs "$install_dir/lib" || {
     dotlog::error "Failed to source library scripts"
     exit 1
   }
