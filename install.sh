@@ -2,7 +2,6 @@
 set -euo pipefail
 
 # constants
-readonly USERNAME="iamnewton"
 readonly REPO="dotutils"
 readonly INSTALL_DIR="$HOME/.local/lib/$REPO"
 readonly TARBALL="/tmp/${REPO}.tar.gz"
@@ -11,7 +10,7 @@ main() {
   # Step 1: Download the repo into INSTALL_DIR
   if [[ ! -d "$INSTALL_DIR" ]]; then
     mkdir -p "$INSTALL_DIR"
-    curl -#fLo "$TARBALL" "https://github.com/$USERNAME/$REPO/tarball/main"
+    curl -#fLo "$TARBALL" "https://github.com/iamnewton/$REPO/tarball/main"
     tar -zxf "$TARBALL" --strip-components 1 -C "$INSTALL_DIR"
     rm -f "$TARBALL"
   fi
