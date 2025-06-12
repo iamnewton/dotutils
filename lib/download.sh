@@ -1,14 +1,16 @@
 download () {
   local install_dir="$1"
-  local github_url="${2:-github.com}"
+  local repo="$2"
+  local username="${USERNAME:-iamnewton}"
+  local github_url="${3:-github.com}"
 
-  local tarball="/tmp/${REPO}.tar.gz"
-  local symlink_target="$HOME/.local/bin/$REPO"
-  local source_bin="$install_dir/bin/$REPO"
+  local tarball="/tmp/${repo}.tar.gz"
+  local symlink_target="$HOME/.local/bin/$repo"
+  local source_bin="$install_dir/bin/$repo"
 
   # Defensive: Validate critical inputs
-  if [[ -z "$USERNAME" || -z "$REPO" || -z "$install_dir" ]]; then
-    dotlog::error "Missing USERNAME, REPO, or install_dir"
+  if [[ -z "$username" || -z "$repo" || -z "$install_dir" ]]; then
+    dotlog::error "Missing required parameters: username, repo, or install_dir"
     return 1
   fi
 
@@ -19,8 +21,8 @@ download () {
       return 1
     fi
 
-    dotlog::process "Downloading $REPO repository tarball"
-    if ! curl -#fLo "$tarball" "https://$github_url/$USERNAME/$REPO/tarball/main"; then
+    dotlog::process "Downloading $repo repository tarball"
+    if ! curl -#fLo "$tarball" "https://$github_url/$username/$repo/tarball/main"; then
       dotlog::error "Failed to download repository from GitHub"
       return 1
     fi
@@ -51,9 +53,8 @@ download () {
     fi
 
     ln -sfn "$source_bin" "$symlink_target"
-    dotlog::success "$install_dir setup complete and $REPO linked to ~/.local/bin"
+    dotlog::success "$install_dir setup complete and $repo linked to ~/.local/bin"
   else
     dotlog::info "$install_dir already exists, skipping download"
   fi
 }
-
