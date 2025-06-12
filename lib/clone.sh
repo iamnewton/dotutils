@@ -1,14 +1,13 @@
-#!/usr/bin/env bash
-set -euo pipefail
-
 clone () {
 	local install_dir="$1"
+	local repo="$2"
+	local username="${USERNAME:-iamnewton}"
 	local github_url="${GITHUB_URL:-github.com}"
 	local branch="${BRANCH:-main}"
 
 	# Defensive checks
-	if [[ -z "$USERNAME" || -z "$REPO" || -z "$install_dir" ]]; then
-		dotlog::error "Missing required globals (USERNAME, REPO) or install_dir argument"
+	if [[ -z "$username" || -z "$repo" || -z "$install_dir" ]]; then
+		dotlog::error "Missing required parameters: repo and install_dir must be set"
 		return 1
 	fi
 
@@ -23,7 +22,7 @@ clone () {
 	fi
 
 	dotlog::process "Changing directory to $install_dir"
-  	pushd "$install_dir" > /dev/null || {
+	pushd "$install_dir" > /dev/null || {
 		dotlog::error "Failed to cd into $install_dir"
 		return 1
 	}
@@ -32,8 +31,8 @@ clone () {
 	git init --quiet || return 1
 	git branch -m "$branch" || return 1
 
-	local repo_url="https://$github_url/$USERNAME/$REPO.git"
-	dotlog::process "Adding $repo_url as an origin""
+	local repo_url="https://$github_url/$username/$repo.git"
+	dotlog::process "Adding $repo_url as an origin"
 	git remote add origin "$repo_url" || return 1
 
 	dotlog::process "Fetching from origin"
@@ -56,4 +55,3 @@ clone () {
 	dotlog::success "Repository successfully updated"
 	popd > /dev/null
 }
-
