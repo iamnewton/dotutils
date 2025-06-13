@@ -17,13 +17,6 @@ main() {
   
   # source source_libs function first
   source "$install_dir/lib/clone.sh"
-  source "$install_dir/lib/download.sh"
-  
-  # run main install functions
-  download "$install_dir" "$repo_name" || {
-    dotlog::error "Download failed"
-    exit 1
-  }
   
   clone "$install_dir" "$repo_name" || {
     dotlog::error "Git clone/init failed"
